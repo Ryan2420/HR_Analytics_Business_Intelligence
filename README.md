@@ -495,8 +495,8 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 ## 👨‍💻 Author
 
 **Abdelhak Abdelhakem**
-- GitHub: [@yourusername](https://github.com/abdelhak-abdelhakem)
-- LinkedIn: [Your Profile](https://www.linkedin.com/in/abdelhak-abdelhakem/)
+- GitHub: [@abdelhak-abdelhakem](https://github.com/abdelhak-abdelhakem)
+- LinkedIn: [Abdelhak Abdelhakem](https://www.linkedin.com/in/abdelhak-abdelhakem/)
 - Email: abdelhakemabdelhak@gmail.com
 
 ---

@@ -494,10 +494,10 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 
 ## 👨‍💻 Author
 
-**[Your Name]**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your Profile](https://linkedin.com/in/yourprofile)
-- Email: your.email@example.com
+**Abdelhak Abdelhakem**
+- GitHub: [@yourusername](https://github.com/abdelhak-abdelhakem)
+- LinkedIn: [Your Profile](https://www.linkedin.com/in/abdelhak-abdelhakem/)
+- Email: abdelhakemabdelhak@gmail.com
 
 ---
 

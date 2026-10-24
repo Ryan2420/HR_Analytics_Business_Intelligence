@@ -710,32 +710,140 @@ elif page == "⚡ Hyperparameter Tuning":
     """)
 
 # ====================================
+
 # PAGE 5: MAKE PREDICTIONS
-# ====================================
-elif page == "🔮 Make Predictions":
-    st.markdown('<h1 class="main-header">🔮 Make Predictions</h1>', unsafe_allow_html=True)
-    
-    st.markdown("""
-    Use the trained and optimized model to predict employee attrition risk. You can either:
-    - **Upload a CSV file** with employee data (use sidebar)
-    - **Enter data manually** using the form below
-    """)
-    
-    prediction_mode = st.radio(
-        "Select Prediction Mode",
-        ["📝 Manual Entry", "📤 Batch Prediction (CSV)"],
-        horizontal=True
+elif page == "???? Make Predictions":
+    st.markdown(
+        '<h1 class="main-header">Make Predictions</h1>',
+        unsafe_allow_html=True
     )
-    
-    if prediction_mode == "📝 Manual Entry":
-        st.markdown('<p class="sub-header">Enter Employee Information</p>', unsafe_allow_html=True)
-        
-        # Create input form based on sample data
-        if sample_data is not None:
-            col1, col2, col3 = st.columns(3)
-            
-            input_data = {}
-            
-            with col1:
-                st.markdown("**Personal Information**")
-                if 'Age' in sample_data.columns:
+
+    st.warning(
+        "Upload a PREPROCESSED CSV containing the exact 53 model features. "
+        "Raw employee records require the original encoding and scaling "
+        "pipeline, which is not saved as a reusable transformer."
+    )
+
+    feature_names = metadata["feature_names"]
+    threshold = float(metadata.get("optimal_threshold", 0.5))
+
+    st.markdown("### Upload preprocessed employee data")
+    prediction_file = st.file_uploader(
+        "Choose a CSV file",
+        type=["csv"],
+        key="prediction_csv"
+    )
+
+    if prediction_file is not None:
+        try:
+            prediction_data = pd.read_csv(prediction_file)
+
+            missing = [c for c in feature_names if c not in prediction_data.columns]
+            extra = [c for c in prediction_data.columns if c not in feature_names]
+
+            if missing:
+                st.error(
+                    f"Missing {len(missing)} required feature columns: "
+                    + ", ".join(missing)
+                )
+                st.info(
+                    "Use the feature names listed in model_metadata.pkl. "
+                    "The file must contain the same encoded and scaled features "
+                    "used to train the model."
+                )
+            elif prediction_data.empty:
+                st.error("The uploaded CSV contains no rows.")
+            else:
+                X_input = prediction_data.loc[:, feature_names].copy()
+
+                for column in feature_names:
+                    X_input[column] = pd.to_numeric(
+                        X_input[column], errors="coerce"
+                    )
+
+                if X_input.isna().any().any():
+                    bad_columns = X_input.columns[
+                        X_input.isna().any()
+                    ].tolist()
+                    st.error(
+                        "Missing or non-numeric values found in: "
+                        + ", ".join(bad_columns)
+                    )
+                elif not np.isfinite(X_input.to_numpy(dtype=float)).all():
+                    st.error("The CSV contains infinite or invalid numeric values.")
+                else:
+                    predictions = best_model.predict(X_input)
+                    probabilities = best_model.predict_proba(X_input)[:, 1]
+
+                    results = pd.DataFrame({
+                        "Prediction": predictions,
+                        "Attrition_Risk_Probability": probabilities,
+                        "Risk_Level": np.where(
+                            probabilities >= 0.70, "High",
+                            np.where(probabilities >= 0.40, "Medium", "Low")
+                        )
+                    })
+
+                    st.success(
+                        f"Generated predictions for {len(results):,} employees."
+                    )
+
+                    metric1, metric2, metric3 = st.columns(3)
+                    metric1.metric("Employees analyzed", f"{len(results):,}")
+                    metric2.metric(
+                        "Predicted attrition",
+                        int((predictions == 1).sum())
+                    )
+                    metric3.metric(
+                        "Average predicted risk",
+                        f"{probabilities.mean():.1%}"
+                    )
+
+                    st.markdown("### Prediction results")
+                    st.dataframe(
+                        pd.concat(
+                            [prediction_data.reset_index(drop=True), results],
+                            axis=1
+                        ),
+                        use_container_width=True
+                    )
+
+                    st.download_button(
+                        "Download prediction results",
+                        data=pd.concat(
+                            [prediction_data.reset_index(drop=True), results],
+                            axis=1
+                        ).to_csv(index=False).encode("utf-8"),
+                        file_name="hr_attrition_predictions.csv",
+                        mime="text/csv"
+                    )
+
+                    with st.expander("Model information"):
+                        st.write("Model:", metadata["best_model_name"])
+                        st.write("Expected features:", len(feature_names))
+                        st.write("Training decision threshold:", threshold)
+                        st.caption(
+                            "Risk levels are descriptive probability bands, "
+                            "not validated HR decision thresholds. Predictions "
+                            "are only meaningful when the input preprocessing "
+                            "matches training."
+                        )
+
+        except Exception as exc:
+            st.error(f"Could not process the uploaded CSV: {exc}")
+
+    st.markdown("---")
+    st.markdown("### Required feature template")
+    st.caption(
+        "Download a blank template containing the exact feature names. "
+        "The template is for structure only; it does not contain valid "
+        "employee values."
+    )
+
+    template = pd.DataFrame(columns=feature_names)
+    st.download_button(
+        "Download 53-feature template",
+        data=template.to_csv(index=False).encode("utf-8"),
+        file_name="hr_prediction_template.csv",
+        mime="text/csv"
+    )

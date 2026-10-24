@@ -3,7 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import warnings
+from pathlib import Path
 
+Path("outputs").mkdir(parents=True, exist_ok=True)
 warnings.filterwarnings('ignore')
 
 # ====================================

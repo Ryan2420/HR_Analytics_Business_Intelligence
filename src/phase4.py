@@ -1,4 +1,4 @@
-import pandas as pd
+﻿import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -42,14 +42,14 @@ try:
     feature_importance = pd.read_csv('data/feature_importance.csv')
     best_params = pd.read_csv('data/best_hyperparameters.csv')
 
-    print(f"✅ Data loaded successfully")
+    print(f"âœ… Data loaded successfully")
     print(f"   Original dataset: {df_original.shape}")
     print(f"   Processed dataset: {df.shape}")
     print(f"   Baseline models: {len(baseline_results)}")
     print(f"   Tuned models: {len(model_results)}")
 
 except FileNotFoundError as e:
-    print(f"❌ Error: {e}")
+    print(f"âŒ Error: {e}")
     print("   Please run Phase 2 and Phase 3 first!")
     exit()
 
@@ -106,7 +106,7 @@ for idx, feature in enumerate(numerical_features):
 plt.suptitle('EDA: Distribution Analysis - Histograms with KDE',
              fontsize=16, fontweight='bold', y=0.995)
 plt.savefig('outputs/phase4_histograms.png', dpi=300, bbox_inches='tight')
-print("✅ Saved: 'outputs/phase4_histograms.png'")
+print("âœ… Saved: 'outputs/phase4_histograms.png'")
 
 # ====================================
 # A2: BOXPLOTS - Outlier Detection
@@ -140,7 +140,7 @@ for idx, feature in enumerate(numerical_features):
 plt.suptitle('EDA: Outlier Detection - Boxplots by Target Variable',
              fontsize=16, fontweight='bold', y=0.995)
 plt.savefig('outputs/phase4_boxplots.png', dpi=300, bbox_inches='tight')
-print("✅ Saved: 'outputs/phase4_boxplots.png'")
+print("âœ… Saved: 'outputs/phase4_boxplots.png'")
 
 # ====================================
 # A3: CORRELATION MATRIX
@@ -169,7 +169,7 @@ ax3.set_title('Correlation Matrix - All Numerical Features',
 
 plt.tight_layout()
 plt.savefig('outputs/phase4_correlation_matrix.png', dpi=300, bbox_inches='tight')
-print("✅ Saved: 'outputs/phase4_correlation_matrix.png'")
+print("âœ… Saved: 'outputs/phase4_correlation_matrix.png'")
 
 # ====================================
 # A4: TOP CORRELATIONS WITH TARGET
@@ -196,7 +196,7 @@ if 'Attrition_Encoded' in numerical_df.columns:
 
     plt.tight_layout()
     plt.savefig('outputs/phase4_target_correlation.png', dpi=300, bbox_inches='tight')
-    print("✅ Saved: 'outputs/phase4_target_correlation.png'")
+    print("âœ… Saved: 'outputs/phase4_target_correlation.png'")
 
 # ====================================
 # PART B: PLOTLY INTERACTIVE VISUALIZATIONS
@@ -237,7 +237,7 @@ fig_hist.update_layout(
 )
 
 fig_hist.write_html('outputs/phase4_interactive_histograms.html')
-print("✅ Saved: 'outputs/phase4_interactive_histograms.html'")
+print("âœ… Saved: 'outputs/phase4_interactive_histograms.html'")
 
 # ====================================
 # B2: INTERACTIVE BOXPLOT (Plotly)
@@ -265,7 +265,7 @@ fig_box.update_layout(
 )
 
 fig_box.write_html('outputs/phase4_interactive_boxplots.html')
-print("✅ Saved: 'outputs/phase4_interactive_boxplots.html'")
+print("âœ… Saved: 'outputs/phase4_interactive_boxplots.html'")
 
 # ====================================
 # B3: 3D SCATTER PLOT (Plotly)
@@ -288,7 +288,7 @@ if all(col in df_original.columns for col in ['Age', 'MonthlyIncome', 'YearsAtCo
 
     fig_3d.update_traces(marker=dict(size=5))
     fig_3d.write_html('outputs/phase4_3d_scatter.html')
-    print("✅ Saved: 'outputs/phase4_3d_scatter.html'")
+    print("âœ… Saved: 'outputs/phase4_3d_scatter.html'")
 
 # ====================================
 # B4: INTERACTIVE CORRELATION HEATMAP
@@ -319,7 +319,7 @@ fig_corr.update_layout(
 )
 
 fig_corr.write_html('outputs/phase4_interactive_correlation.html')
-print("✅ Saved: 'outputs/phase4_interactive_correlation.html'")
+print("âœ… Saved: 'outputs/phase4_interactive_correlation.html'")
 
 # ====================================
 # B5: BASELINE vs TUNED MODEL COMPARISON (INTERACTIVE)
@@ -358,7 +358,7 @@ fig_comparison.update_layout(
 )
 
 fig_comparison.write_html('outputs/phase4_baseline_vs_tuned_interactive.html')
-print("✅ Saved: 'outputs/phase4_baseline_vs_tuned_interactive.html'")
+print("âœ… Saved: 'outputs/phase4_baseline_vs_tuned_interactive.html'")
 
 # ====================================
 # B6: IMPROVEMENT ANALYSIS (INTERACTIVE)
@@ -388,7 +388,7 @@ fig_improvement.update_layout(
 )
 
 fig_improvement.write_html('outputs/phase4_improvement_analysis.html')
-print("✅ Saved: 'outputs/phase4_improvement_analysis.html'")
+print("âœ… Saved: 'outputs/phase4_improvement_analysis.html'")
 
 # ====================================
 # B7: MODEL COMPARISON RADAR CHART (BASELINE vs TUNED)
@@ -433,7 +433,7 @@ fig_radar.update_layout(
 )
 
 fig_radar.write_html('outputs/phase4_model_radar_comparison.html')
-print("✅ Saved: 'outputs/phase4_model_radar_comparison.html'")
+print("âœ… Saved: 'outputs/phase4_model_radar_comparison.html'")
 
 # ====================================
 # B8: HYPERPARAMETER TUNING RESULTS (INTERACTIVE)
@@ -466,7 +466,7 @@ fig_tuning.add_trace(
         y=tuning_results['Improvement'],
         mode='markers+text',
         marker=dict(
-            size=tuning_results['Improvement'] * 1000,
+            size=(tuning_results['Improvement'].abs() * 1000).clip(lower=5),
             color=tuning_results['Improvement'],
             colorscale='RdYlGn',
             showscale=True,
@@ -492,7 +492,7 @@ fig_tuning.update_layout(
 )
 
 fig_tuning.write_html('outputs/phase4_tuning_analysis.html')
-print("✅ Saved: 'outputs/phase4_tuning_analysis.html'")
+print("âœ… Saved: 'outputs/phase4_tuning_analysis.html'")
 
 # ====================================
 # B9: BEST HYPERPARAMETERS VISUALIZATION
@@ -522,7 +522,7 @@ fig_params.update_layout(
 )
 
 fig_params.write_html('outputs/phase4_best_hyperparameters.html')
-print("✅ Saved: 'outputs/phase4_best_hyperparameters.html'")
+print("âœ… Saved: 'outputs/phase4_best_hyperparameters.html'")
 
 # ====================================
 # B10: MODEL PERFORMANCE METRICS HEATMAP
@@ -554,7 +554,7 @@ fig_heatmap.update_layout(
 )
 
 fig_heatmap.write_html('outputs/phase4_metrics_heatmap.html')
-print("✅ Saved: 'outputs/phase4_metrics_heatmap.html'")
+print("âœ… Saved: 'outputs/phase4_metrics_heatmap.html'")
 
 # ====================================
 # B11: MODEL RANKING BY METRIC (INTERACTIVE)
@@ -615,7 +615,7 @@ fig_ranking.update_layout(
 )
 
 fig_ranking.write_html('outputs/phase4_model_ranking.html')
-print("✅ Saved: 'outputs/phase4_model_ranking.html'")
+print("âœ… Saved: 'outputs/phase4_model_ranking.html'")
 
 # ====================================
 # B12: FEATURE IMPORTANCE INTERACTIVE CHART (UPDATED)
@@ -641,7 +641,7 @@ fig_feat.update_layout(
 )
 
 fig_feat.write_html('outputs/phase4_feature_importance_interactive.html')
-print("✅ Saved: 'outputs/phase4_feature_importance_interactive.html'")
+print("âœ… Saved: 'outputs/phase4_feature_importance_interactive.html'")
 
 # ====================================
 # COMPREHENSIVE DASHBOARD (Matplotlib)
@@ -805,7 +805,7 @@ ax_c9.set_ylim([0, 1.05])
 plt.suptitle('PHASE 4: COMPREHENSIVE BUSINESS INTELLIGENCE DASHBOARD\n(With Baseline vs Tuned Analysis)',
              fontsize=18, fontweight='bold', y=0.998)
 plt.savefig('outputs/phase4_comprehensive_dashboard.png', dpi=300, bbox_inches='tight')
-print("\n✅ Saved: 'outputs/phase4_comprehensive_dashboard.png'")
+print("\nâœ… Saved: 'outputs/phase4_comprehensive_dashboard.png'")
 
 plt.show()
 
@@ -813,55 +813,55 @@ plt.show()
 # FINAL SUMMARY
 # ====================================
 print("\n" + "=" * 70)
-print("✅ PHASE 4 COMPLETE - VISUALIZATION SUMMARY")
+print("âœ… PHASE 4 COMPLETE - VISUALIZATION SUMMARY")
 print("=" * 70)
 
 print(f"""
-📊 MATPLOTLIB VISUALIZATIONS (Static):
-   ✅ Histograms (8 features with KDE)
-   ✅ Boxplots (8 features by target)
-   ✅ Correlation Matrix (full dataset)
-   ✅ Target Correlation Analysis (top 15)
-   ✅ Comprehensive Dashboard (9 plots including baseline vs tuned)
+ðŸ“Š MATPLOTLIB VISUALIZATIONS (Static):
+   âœ… Histograms (8 features with KDE)
+   âœ… Boxplots (8 features by target)
+   âœ… Correlation Matrix (full dataset)
+   âœ… Target Correlation Analysis (top 15)
+   âœ… Comprehensive Dashboard (9 plots including baseline vs tuned)
 
-🎨 PLOTLY VISUALIZATIONS (Interactive):
-   ✅ Interactive Histograms (4 features)
-   ✅ Interactive Boxplots (by attrition)
-   ✅ 3D Scatter Plot (Age × Income × Tenure)
-   ✅ Interactive Correlation Heatmap
-   ✅ Baseline vs Tuned Comparison (bar chart)
-   ✅ Improvement Analysis (horizontal bars)
-   ✅ Model Radar Chart (baseline vs tuned)
-   ✅ Hyperparameter Tuning Analysis (time & efficiency)
-   ✅ Best Hyperparameters Table
-   ✅ Performance Metrics Heatmap
-   ✅ Model Ranking by Metric
-   ✅ Interactive Feature Importance
+ðŸŽ¨ PLOTLY VISUALIZATIONS (Interactive):
+   âœ… Interactive Histograms (4 features)
+   âœ… Interactive Boxplots (by attrition)
+   âœ… 3D Scatter Plot (Age Ã— Income Ã— Tenure)
+   âœ… Interactive Correlation Heatmap
+   âœ… Baseline vs Tuned Comparison (bar chart)
+   âœ… Improvement Analysis (horizontal bars)
+   âœ… Model Radar Chart (baseline vs tuned)
+   âœ… Hyperparameter Tuning Analysis (time & efficiency)
+   âœ… Best Hyperparameters Table
+   âœ… Performance Metrics Heatmap
+   âœ… Model Ranking by Metric
+   âœ… Interactive Feature Importance
 
-💾 FILES GENERATED (17 total):
-   📁 Static Images (PNG):
-      • outputs/phase4_histograms.png
-      • outputs/phase4_boxplots.png
-      • outputs/phase4_correlation_matrix.png
-      • outputs/phase4_target_correlation.png
-      • outputs/phase4_comprehensive_dashboard.png
+ðŸ’¾ FILES GENERATED (17 total):
+   ðŸ“ Static Images (PNG):
+      â€¢ outputs/phase4_histograms.png
+      â€¢ outputs/phase4_boxplots.png
+      â€¢ outputs/phase4_correlation_matrix.png
+      â€¢ outputs/phase4_target_correlation.png
+      â€¢ outputs/phase4_comprehensive_dashboard.png
 
-   🌐 Interactive HTML:
-      • outputs/phase4_interactive_histograms.html
-      • outputs/phase4_interactive_boxplots.html
-      • outputs/phase4_3d_scatter.html
-      • outputs/phase4_interactive_correlation.html
-      • outputs/phase4_baseline_vs_tuned_interactive.html         [NEW]
-      • outputs/phase4_improvement_analysis.html                  [NEW]
-      • outputs/phase4_model_radar_comparison.html                [NEW]
-      • outputs/phase4_tuning_analysis.html                       [NEW]
-      • outputs/phase4_best_hyperparameters.html                  [NEW]
-      • outputs/phase4_metrics_heatmap.html                       [NEW]
-      • outputs/phase4_model_ranking.html                         [NEW]
-      • outputs/phase4_feature_importance_interactive.html
+   ðŸŒ Interactive HTML:
+      â€¢ outputs/phase4_interactive_histograms.html
+      â€¢ outputs/phase4_interactive_boxplots.html
+      â€¢ outputs/phase4_3d_scatter.html
+      â€¢ outputs/phase4_interactive_correlation.html
+      â€¢ outputs/phase4_baseline_vs_tuned_interactive.html         [NEW]
+      â€¢ outputs/phase4_improvement_analysis.html                  [NEW]
+      â€¢ outputs/phase4_model_radar_comparison.html                [NEW]
+      â€¢ outputs/phase4_tuning_analysis.html                       [NEW]
+      â€¢ outputs/phase4_best_hyperparameters.html                  [NEW]
+      â€¢ outputs/phase4_metrics_heatmap.html                       [NEW]
+      â€¢ outputs/phase4_model_ranking.html                         [NEW]
+      â€¢ outputs/phase4_feature_importance_interactive.html
 
-🔍 KEY INSIGHTS FROM EDA:
-   📈 Hyperparameter Tuning Impact:
+ðŸ” KEY INSIGHTS FROM EDA:
+   ðŸ“ˆ Hyperparameter Tuning Impact:
 """)
 
 # Print some insights
@@ -872,7 +872,7 @@ if 'Attrition_Encoded' in numerical_df.columns:
 
 print("\n   Model Performance Improvements:")
 for idx, row in comparison_results.iterrows():
-    print(f"      • {row['Model']}: {row['Improvement']:.4f} (+{row['Improvement_%']:.2f}%)")
+    print(f"      â€¢ {row['Model']}: {row['Improvement']:.4f} (+{row['Improvement_%']:.2f}%)")
 
 print(f"\n   Best Model After Tuning:")
 best_model_name = model_results.iloc[0]['Model']
@@ -885,5 +885,5 @@ improvement = model_results.iloc[0]['ROC-AUC'] - \
 print(f"      Improvement: +{improvement:.4f}")
 
 print("\n" + "=" * 70)
-print("🚀 Ready for PHASE 5: STREAMLIT DEPLOYMENT")
+print("ðŸš€ Ready for PHASE 5: STREAMLIT DEPLOYMENT")
 print("=" * 70)

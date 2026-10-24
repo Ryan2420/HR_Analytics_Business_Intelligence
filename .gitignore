@@ -116,3 +116,9 @@ Thumbs.db
 # ====================================
 .streamlit/secrets.toml
 .streamlit/config.toml
+# HR analytics generated data and model artifacts
+data/*.csv
+data/*.pkl
+
+# Local backups
+*.broken-backup
